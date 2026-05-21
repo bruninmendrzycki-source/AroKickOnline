@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>AroKick Online</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div id="brightnessOverlay"></div>
+
+<section id="mainMenu" class="screen active">
+  <div class="brand">
+    <div class="brand-kicker">⚽ ARENA MULTIPLAYER</div>
+    <h1>AroKick <span>Online</span></h1>
+    <p>Futebol 2D com aro de chute, salas e banco de reservas.</p>
+  </div>
+  <div class="menu-stack">
+    <button id="btnTraining" class="primary">MODO TREINO</button>
+    <button id="btnMultiplayer" class="primary blue">MULTIPLAYER</button>
+    <button id="btnMainSettings" class="secondary">CONFIGURAÇÕES</button>
+    <button id="btnShop" class="secondary">LOJA</button>
+  </div>
+</section>
+
+<section id="modeMenu" class="screen">
+  <div class="panel narrow">
+    <h2>Escolha o modo</h2>
+    <div class="mode-grid">
+      <button data-mode="1v1">1 VS 1<small>Campo curto</small></button>
+      <button data-mode="2v2">2 VS 2<small>Campo médio</small></button>
+      <button data-mode="3v3">3 VS 3<small>Campo grande</small></button>
+      <button data-mode="4v4">4 VS 4<small>Campo atual</small></button>
+    </div>
+    <button class="backBtn">VOLTAR</button>
+  </div>
+</section>
+
+<section id="multiplayerMenu" class="screen">
+  <div class="panel mp-panel">
+    <h2>Multiplayer</h2>
+    <label>Nickname</label>
+    <input id="nickInput" maxlength="18" placeholder="Seu nome" value="Player">
+    <label>Modo da sala</label>
+    <select id="roomMode">
+      <option value="1v1">1 vs 1</option>
+      <option value="2v2">2 vs 2</option>
+      <option value="3v3">3 vs 3</option>
+      <option value="4v4" selected>4 vs 4</option>
+    </select>
+    <div class="join-row">
+      <input id="joinCodeInput" maxlength="5" placeholder="CÓDIGO">
+      <button id="btnJoinRoom">ENTRAR</button>
+    </div>
+    <button id="btnCreateRoom" class="primary">CRIAR SALA</button>
+    <button id="btnListRooms" class="secondary">SALAS CRIADAS</button>
+    <div id="roomsList" class="rooms-list"></div>
+    <button class="backBtn">VOLTAR</button>
+  </div>
+</section>
+
+<section id="lobbyScreen" class="screen">
+  <div class="lobby-top">
+    <button id="btnLobbyBack">‹ MENU</button>
+    <div class="room-code">SALA <strong id="roomCodeText">-----</strong></div>
+    <button id="btnStartMatch" class="admin-only">INICIAR</button>
+  </div>
+  <div class="lobby-grid">
+    <div class="team-card red">
+      <h3>Red Team</h3>
+      <div id="redList" class="player-list"></div>
+    </div>
+    <div class="team-card specs">
+      <h3>Banco de reservas</h3>
+      <div id="specList" class="player-list"></div>
+    </div>
+    <div class="team-card blue">
+      <h3>Blue Team</h3>
+      <div id="blueList" class="player-list"></div>
+    </div>
+  </div>
+  <div class="lobby-help">O administrador toca/clica em um jogador para escolher equipe ou passar administração.</div>
+</section>
+
+<section id="mainSettings" class="screen">
+  <div class="panel settings-panel">
+    <h2>Configurações do menu</h2>
+    <label>FPS</label>
+    <select id="setFps">
+      <option value="60">60 FPS</option>
+      <option value="90">90 FPS</option>
+      <option value="120" selected>120 FPS</option>
+    </select>
+
+    <label>Gráficos</label>
+    <select id="setGraphics">
+      <option value="low">Baixo</option>
+      <option value="medium">Médio</option>
+      <option value="high" selected>Alto</option>
+    </select>
+
+    <label>Brilho da tela</label>
+    <input id="setBrightness" type="range" min="70" max="130" value="100">
+
+    <button id="btnFullscreen" class="secondary">MODO TELA CHEIA</button>
+    <button class="backBtn">VOLTAR</button>
+  </div>
+</section>
+
+<section id="shopScreen" class="screen">
+  <div class="panel narrow">
+    <h2>Loja</h2>
+    <p>Em breve: skins, aros, bolas e efeitos visuais.</p>
+    <button class="backBtn">VOLTAR</button>
+  </div>
+</section>
+
+<div id="hud" class="hud hidden">
+  <div class="score-box">
+    <div><span id="scoreRed">0</span><b>×</b><span id="scoreBlue">0</span></div>
+    <small id="matchClock">00:00</small>
+  </div>
+  <button id="homeBtn" title="Menu">⌂</button>
+  <button id="matchConfigBtn" title="Configuração">⚙</button>
+</div>
+
+<div id="mobileControls" class="controls hidden">
+  <div id="joystick" class="joystick"><div></div></div>
+  <button id="kickBtn">CHUTE</button>
+</div>
+
+<div id="replayOverlay" class="replay hidden">
+  <div>REPLAY</div>
+  <button id="skipReplayBtn" class="hidden">PULAR REPLAY</button>
+</div>
+
+<div id="playerActionModal" class="modal hidden">
+  <div class="modal-card">
+    <h3 id="actionPlayerName">Jogador</h3>
+    <button data-action="red">Colocar no Red Team</button>
+    <button data-action="blue">Colocar no Blue Team</button>
+    <button data-action="spectators">Mover para reservas</button>
+    <button data-action="admin">Passar administração</button>
+    <button data-action="close">Fechar</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="client.js"></script>
+</body>
+</html>
